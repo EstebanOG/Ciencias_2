@@ -1,9 +1,16 @@
 package arbolrn;
 
+import java.util.ArrayList;
+
 public class ArbolRN {
     private NodoRN raiz, z;
     private final int NEGRO = 0;
     private final int ROJO = 1;
+    private ArrayList<NodoRN> listInorden = new ArrayList<>();
+    private ArrayList<NodoRN> listPreorden = new ArrayList<>();
+    private ArrayList<Punto> listPunto = new ArrayList<>();
+    private Punto matriz[][] = new Punto[10][10];
+    
     
     public NodoRN Raiz(){
         return raiz;
@@ -17,6 +24,7 @@ public class ArbolRN {
         raiz = new NodoRN(0,NEGRO);
         raiz.setIzq(z);
         raiz.setDer(z);
+        this.listInorden.clear();
     }
     
     public NodoRN rotar(int v, NodoRN p){
@@ -100,24 +108,41 @@ public class ArbolRN {
         x = dividir(v, gf, g, p, x);
         return x;
     }
-    
+    public ArrayList<NodoRN> obtenerInorden(){
+        return listInorden;
+    }
+    public void limpiarArrayInorden(){
+        this.listInorden.clear();
+    }
+    public ArrayList<NodoRN> obtenerPreorden(){
+        return listInorden;
+    }
+    public void limpiarArrayPreorden(){
+        this.listPreorden.clear();
+    }
     public void inorden(NodoRN p){
         if(p != z){
             inorden(p.getIzq());
             if(p.getColor() == ROJO){
+                this.listInorden.add(p);
                 System.out.println(" "+ p.getLlave()+""+"R");
+                
             }else{
+                this.listInorden.add(p);
                 System.out.println(" "+p.getLlave()+""+"N");
             }
             inorden(p.getDer());
         }
+        
     }
     
     public void preorden(NodoRN p){
         if(p != z){
             if(p.getColor() == ROJO){
+                this.listPreorden.add(p);
                 System.out.println(" "+p.getLlave()+""+"R");
             }else{
+                this.listPreorden.add(p);
                 System.out.println(" "+p.getLlave()+""+"N");
             }
             preorden(p.getIzq());
@@ -309,5 +334,51 @@ public class ArbolRN {
         }
         return 1;
     }
-    
+    public void dibujarARN(){
+        limpiarArrayPunto();
+        inorden(raiz);
+        preorden(raiz);
+        this.listInorden.remove(0);
+        this.listPreorden.remove(0);
+        System.out.println("X:"+listInorden.size()+" Y:"+listPreorden.size());
+        
+        for(int i=0; i<10;i++){
+            for(int j=0; j<10;j++){
+                //punto.setNodoRNX(listInorden.get(j));
+                Punto punto = new Punto();
+                matriz[i][j]=punto;
+            }
+        }
+        //Llenar con datos inorden
+        for(int i=0; i<listPreorden.size();i++){
+            for(int j=0; j<listInorden.size();j++){
+                Punto punto = new Punto();
+                punto.setNodoRNX(listInorden.get(j));
+                matriz[i][j] = punto;
+            }
+        }
+        //Llenar con datos en preOrden
+        for(int i=0; i<listPreorden.size();i++){
+            for(int j=0; j<listInorden.size();j++){
+                matriz[i][j].setNodoRNY(listPreorden.get(i));
+            }
+        }
+        for(int i=0; i<listPreorden.size();i++){
+            for(int j=0; j<listInorden.size();j++){
+                if(matriz[i][j].getNodoRNX().getLlave()==matriz[i][j].getNodoRNY().getLlave()){
+                    matriz[i][j].setPosX(i);
+                    matriz[i][j].setPosY(j);
+                    this.listPunto.add(matriz[i][j]);
+                }
+                //System.out.println(","+matriz[i][j].getNodoRNX().getLlave()+"-"+matriz[i][j].getNodoRNY().getLlave());
+            }
+            System.out.println("----");
+        }
+    }
+     public ArrayList<Punto> obtenerPuntos(){
+        return listPunto;
+    }
+    public void limpiarArrayPunto(){
+        this.listPunto.clear();
+    }
 }

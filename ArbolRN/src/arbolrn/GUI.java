@@ -5,6 +5,7 @@
  */
 package arbolrn;
 
+import java.util.ArrayList;
 import javafx.scene.paint.Color;
 import javax.swing.JLabel;
 
@@ -15,18 +16,21 @@ import javax.swing.JLabel;
 public class GUI extends javax.swing.JFrame {
     
     private ArbolRN arbol = new ArbolRN();
-    private NodoRN nodo, padre, hijo;
+    private NodoRN nodo, padre, hijo, nodoInorden;
     private JLabel[] label = new JLabel[100];
-    private int x;
+    private JLabel labelInorden = new JLabel();
+    private static ArrayList<NodoRN> listaInorden = new ArrayList<>();
+    private static ArrayList<Punto> listaPuntos = new ArrayList<>();
+    private GridsCanvas xyz = new GridsCanvas(800, 400, 10, 10);
     /**
      * Creates new form GUI
      */
     public GUI() {
         initComponents();
-        GridsCanvas xyz = new GridsCanvas(800, 400, 10, 10);
+        listaInorden.clear();
+        this.setSize(800,550);
         add(xyz);
         arbol.inicializar();
-        this.x=0;
     }
 
     /**
@@ -47,8 +51,9 @@ public class GUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Árbol Rojinegro");
+        setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
-        setSize(new java.awt.Dimension(800, 500));
+        setSize(new java.awt.Dimension(800, 600));
 
         jButtonDibujar.setText("Dibujar");
         jButtonDibujar.addActionListener(new java.awt.event.ActionListener() {
@@ -82,7 +87,7 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 225, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonInsertar)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonRetirar)
@@ -93,7 +98,7 @@ public class GUI extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(43, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonDibujar)
                     .addComponent(jButtonRetirar)
@@ -110,14 +115,14 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(677, 677, 677))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(430, Short.MAX_VALUE)
+                .addContainerGap(418, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addContainerGap())
         );
 
         pack();
@@ -126,70 +131,56 @@ public class GUI extends javax.swing.JFrame {
     private void jButtonDibujarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDibujarActionPerformed
         //limpia();
         //paint();
+        arbol.limpiarArrayInorden();
+        arbol.limpiarArrayPreorden();
+        arbol.dibujarARN();
+        listaPuntos = arbol.obtenerPuntos();
+        for(int i = 0;i<listaPuntos.size();i++){
+            System.out.println(listaPuntos.get(i).getNodoRNX().getLlave()+"["+listaPuntos.get(i).getPosX()+"]"+"["+listaPuntos.get(i).getPosY()+"]");
+        }
+        xyz.setPuntos(listaPuntos);
+        xyz.repaint();
     }//GEN-LAST:event_jButtonDibujarActionPerformed
 
     private void jButtonInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInsertarActionPerformed
         arbol.insertar(Integer.parseInt(jTextField1.getText()));
+        arbol.limpiarArrayInorden();
         arbol.inorden(arbol.Raiz());
         System.out.println("");
         arbol.preorden(arbol.Raiz());
+        listaInorden = arbol.obtenerInorden();
+        labelInorden.setText("");
+        labelInorden.setText("Inorden:"); 
+        for(int i = 0;i<listaInorden.size();i++){
+            labelInorden.setText(labelInorden.getText()+",("+listaInorden.get(i).getLlave()+","+listaInorden.get(i).getColor()+")");
+        }
+        labelInorden.setBounds(25,20, 500, 10);
+        jPanel2.add(labelInorden);
+        add(jPanel2);
+        setVisible(true);
+        repaint();
+        
     }//GEN-LAST:event_jButtonInsertarActionPerformed
 
     private void jButtonRetirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRetirarActionPerformed
         arbol.eliminar(arbol.Raiz(), Integer.parseInt(jTextField1.getText()));
+        arbol.limpiarArrayInorden();
         arbol.inorden(arbol.Raiz());
         System.out.println("");
         arbol.preorden(arbol.Raiz());
-    }//GEN-LAST:event_jButtonRetirarActionPerformed
-    /*public void paint(){
-        int nivel = 0;
-        
-        label[x] = new JLabel();
-        nodo =arbol.Raiz().getDer();
-        System.out.println("La raiz es.."+nodo.getLlave());
-        label[x].setText(Integer.toString(nodo.getLlave()));
-        if(nodo.getColor()==0){
-            label[x].setBackground(java.awt.Color.BLACK);
-        }else{
-            label[x].setBackground(java.awt.Color.red);
+        listaInorden = arbol.obtenerInorden();
+        labelInorden.setText("");
+        labelInorden.setText("Inorden:"); 
+        for(int i = 0;i<listaInorden.size();i++){
+            labelInorden.setText(labelInorden.getText()+",("+listaInorden.get(i).getLlave()+","+listaInorden.get(i).getColor()+")");
         }
-        label[x].setBounds(380, 20, 20, 20);
-        jPanel1.add(label[x]);
-        this.x++;
-        while (nodo.getDer() != null && nodo.getIzq() != null) {
-            nivel++;
-            padre = nodo;
-            nodo = nodo.getIzq();
-            if (nodo != null) {
-                label[x] = new JLabel();
-                if (nodo.getColor() == 0) {
-                    label[x].setBackground(java.awt.Color.BLACK);
-                } else {
-                    label[x].setBackground(java.awt.Color.red);
-                }
-                label[x].setBounds(170, 40, 20, 20);
-                jPanel1.add(label[x]);
-                this.x++;
-            }else{
-                label[x] = new JLabel();
-                if (nodo.getColor() == 0) {
-                    label[x].setBackground(java.awt.Color.BLACK);
-                } else {
-                    label[x].setBackground(java.awt.Color.red);
-                }
-                label[x].setBounds(170, 40, 20, 20);
-                jPanel1.add(label[x]);
-                this.x++;
-            }
-        }
-        add(jPanel1);
+        labelInorden.setBounds(25,20, 500, 10);
+        jPanel2.add(labelInorden);
+        add(jPanel2);
         setVisible(true);
         repaint();
-    }
-    public void limpia(){
-        jPanel1.removeAll();
-        //jPanel1.revalidate();
-    }*/
+    }//GEN-LAST:event_jButtonRetirarActionPerformed
+
     /**
      * @param args the command line arguments
      */
