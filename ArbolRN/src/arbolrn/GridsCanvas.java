@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package arbolrn;
 
 import java.awt.Canvas;
@@ -10,10 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
-/**
- *
- * @author Usuario
- */
 public class GridsCanvas extends Canvas {
     int width, height;
     int rows;
@@ -24,11 +15,10 @@ public class GridsCanvas extends Canvas {
     setSize(width = w, height = h);
     rows = r;
     cols = c;
-    //puntos.clear();
   }
 
     @Override
-  public void paint(Graphics g) {
+  public void paint(Graphics g){
     int i;
     width = getSize().width;
     height = getSize().height;
@@ -52,13 +42,12 @@ public class GridsCanvas extends Canvas {
             }else{
                 g.setColor(Color.BLACK);
             }
-            
             g.drawString(Integer.toString(puntos.get(j).getNodoRNX().getLlave()), (puntos.get(j).getPosY()*80)+40, (puntos.get(j).getPosX()*40)+20);
+            g.drawString(puntos.get(j).getNodoRNX().getNombre(),(puntos.get(j).getPosY()*80)+40, (puntos.get(j).getPosX()*40)+30);
         }
     }
     limpiarArrayPuntos();
   }
-
     public void setPuntos(ArrayList<Punto> puntos) {
         this.puntos = puntos;
     }

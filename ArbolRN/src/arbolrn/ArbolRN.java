@@ -71,7 +71,7 @@ public class ArbolRN {
         return x;
     }
     
-    public NodoRN insertar(int v){
+    public NodoRN insertar(int v, String nom){
         NodoRN gf, g, p, x;
         x = raiz;
         p = x;
@@ -98,6 +98,7 @@ public class ArbolRN {
         }while(x != z);
         x = new NodoRN(v);//Color sin asignar todavia
         x.setLlave(v);
+        x.setNombre(nom);
         x.setIzq(z);
         x.setDer(z);
         if(v < p.getLlave()){
