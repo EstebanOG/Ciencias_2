@@ -13,7 +13,7 @@ public class GridsCanvas extends Canvas {
     private ArrayList<Punto> puntos;
     private ArrayList<Punto> puntosLinea;
     private Punto raizP, izqP, derP, actP;
-    private int clavePadre;
+    private int clavePadre, claveAbuelo;
 
   GridsCanvas(int w, int h, int r, int c) {
     setSize(width = 1300, height = 550);
@@ -82,7 +82,7 @@ public class GridsCanvas extends Canvas {
                         if (derP == null) {
                             System.out.println("Entra en no null");
                             if((actP.getNodoRNX().getLlave()<raizP.getNodoRNX().getLlave())&&(puntos.get(k).getNodoRNX().getLlave()<raizP.getNodoRNX().getLlave())){
-                                if((puntos.get(k).getNodoRNX().getLlave()<=clavePadre)||clavePadre<actP.getNodoRNX().getLlave())
+                                if((puntos.get(k).getNodoRNX().getLlave()<=clavePadre)||(clavePadre<actP.getNodoRNX().getLlave()&&puntos.get(k).getNodoRNX().getLlave()<claveAbuelo))
                                     this.derP = puntos.get(k);
                                 System.out.println("If 1");
                             }  
@@ -91,8 +91,14 @@ public class GridsCanvas extends Canvas {
                                 if(clavePadre==raizP.getNodoRNX().getLlave()){
                                     this.derP = puntos.get(k);
                                 }else{
-                                    if(puntos.get(k).getNodoRNX().getLlave()<=clavePadre || clavePadre<actP.getNodoRNX().getLlave())
+                                    if(puntos.get(k).getNodoRNX().getLlave()<=clavePadre || (clavePadre<actP.getNodoRNX().getLlave()&&puntos.get(k).getNodoRNX().getLlave()<claveAbuelo)){
                                         this.derP = puntos.get(k);
+                                    }else{
+                                        if((actP.getNodoRNX().getLlave()>clavePadre&&actP.getNodoRNX().getLlave()>claveAbuelo) && puntos.get(k).getNodoRNX().getLlave()>clavePadre &&puntos.get(k).getNodoRNX().getLlave()>claveAbuelo)
+                                            this.derP = puntos.get(k); 
+                                    }
+                                        
+                                    
                                 }
                                 
                                 System.out.println("If 2");
@@ -122,13 +128,18 @@ public class GridsCanvas extends Canvas {
                     System.out.println("xd");
                     if (actP==null||puntos.get(k).getPosX() < actP.getPosX()){
                         this.actP = puntos.get(k);
-                        
+                        //Se busca padre y abuelo del clave actual
                         for(int a = 0; a < puntosLinea.size();a++){
                             if((puntosLinea.get(a).getNodoRNX().getDer().getLlave()==actP.getNodoRNX().getLlave())||(puntosLinea.get(a).getNodoRNX().getIzq().getLlave()==actP.getNodoRNX().getLlave())){
                                 this.clavePadre = puntosLinea.get(a).getNodoRNX().getLlave();
+                                for(int b = 0; b < puntosLinea.size();b++){
+                                    if((puntosLinea.get(b).getNodoRNX().getDer().getLlave()==puntosLinea.get(a).getNodoRNX().getLlave())||(puntosLinea.get(b).getNodoRNX().getIzq().getLlave()==puntosLinea.get(a).getNodoRNX().getLlave())){
+                                        this.claveAbuelo = puntosLinea.get(b).getNodoRNX().getLlave();
+                                    }
+                                }    
                             }
                         }
-                        System.out.println("Actual: "+ actP.getNodoRNX().getLlave()+" Padre:"+clavePadre);
+                        System.out.println("Actual: "+ actP.getNodoRNX().getLlave()+" Padre:"+clavePadre+" Abuelo:"+claveAbuelo);
                         indiceEliminar = k;
                     }
                 }
