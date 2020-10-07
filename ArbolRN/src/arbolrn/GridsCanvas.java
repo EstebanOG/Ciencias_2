@@ -2,6 +2,7 @@ package arbolrn;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -15,9 +16,9 @@ public class GridsCanvas extends Canvas {
     private int clavePadre;
 
   GridsCanvas(int w, int h, int r, int c) {
-    setSize(width = w, height = h);
-    rows = r;
-    cols = c;
+    setSize(width = 1300, height = 550);
+    rows = 40;
+    cols = 40;
     this.izqP = null;
     this.derP = null;
   }
@@ -29,17 +30,19 @@ public class GridsCanvas extends Canvas {
         width = getSize().width;
         height = getSize().height;
 
-        // draw the rows
-        int rowHt = height / (rows);
-        for (i = 0; i < rows; i++) {
-            g.drawLine(0, i * rowHt, width, i * rowHt);
-        }
-
-        // draw the columns
-        int rowWid = width / (cols);
-        for (i = 0; i < cols; i++) {
-            g.drawLine(i * rowWid, 0, i * rowWid, height);
-        }
+//        // draw the rows
+//        int rowHt = height / (rows);
+//        for (i = 0; i < rows; i++) {
+//            g.drawLine(0, i * rowHt, width, i * rowHt);
+//            g.setFont( new Font( "Tahoma", Font.BOLD, 20 ) );
+//        }
+//
+//        // draw the columns
+//        int rowWid = width / (cols);
+//        for (i = 0; i < cols; i++) {
+//            g.drawLine(i * rowWid, 0, i * rowWid, height);
+//            g.setFont( new Font( "Tahoma", Font.BOLD, 20 ) );
+//        }
 
         if (puntos == null || puntos.isEmpty()) {
 
@@ -48,11 +51,14 @@ public class GridsCanvas extends Canvas {
             for (int j = 0; j < puntos.size(); j++) {
                 if (puntos.get(j).getNodoRNX().getColor() == 1) {
                     g.setColor(Color.red);
+                    g.setFont( new Font( "Tahoma", Font.BOLD, 20 ) );
                 } else {
                     g.setColor(Color.BLACK);
+                    g.setFont( new Font( "Tahoma", Font.BOLD, 20 ) );
                 }
+                g.setFont( new Font( "Tahoma", Font.BOLD, 20 ) );
                 g.drawString(Integer.toString(puntos.get(j).getNodoRNX().getLlave()), (puntos.get(j).getPosY() * 80) + 40, (puntos.get(j).getPosX() * 40) + 20);
-                g.drawString(puntos.get(j).getNodoRNX().getNombre(), (puntos.get(j).getPosY() * 80) + 40, (puntos.get(j).getPosX() * 40) + 30);
+                g.drawString(puntos.get(j).getNodoRNX().getNombre(), (puntos.get(j).getPosY() * 80) + 30, (puntos.get(j).getPosX() * 40) + 50);
             }
             //Buscamos la raiz
             
@@ -100,9 +106,11 @@ public class GridsCanvas extends Canvas {
                 }
                 g.setColor(Color.BLACK);
                 if (izqP != null) {
+                    g.setFont( new Font( "Tahoma", Font.BOLD, 20 ) );
                     g.drawLine((actP.getPosY() * 80) + 40, (actP.getPosX() * 40) + 30, (izqP.getPosY() * 80) + 40, (izqP.getPosX() * 40) + 30);
                 }
                 if (derP != null) {
+                    g.setFont( new Font( "Tahoma", Font.BOLD, 20 ) );
                     g.drawLine((actP.getPosY() * 80) + 40, (actP.getPosX() * 40) + 30, (derP.getPosY() * 80) + 40, (derP.getPosX() * 40) + 30);
                 }
                 

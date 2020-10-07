@@ -9,7 +9,7 @@ public class ArbolRN {
     private ArrayList<NodoRN> listInorden = new ArrayList<>();
     private ArrayList<NodoRN> listPreorden = new ArrayList<>();
     private ArrayList<Punto> listPunto = new ArrayList<>();
-    private Punto matriz[][] = new Punto[10][10];
+    private Punto matriz[][] = new Punto[40][40];
     
     
     public NodoRN Raiz(){
@@ -343,8 +343,8 @@ public class ArbolRN {
         this.listPreorden.remove(0);
         System.out.println("X:"+listInorden.size()+" Y:"+listPreorden.size());
         
-        for(int i=0; i<10;i++){
-            for(int j=0; j<10;j++){
+        for(int i=0; i<40;i++){
+            for(int j=0; j<40;j++){
                 //punto.setNodoRNX(listInorden.get(j));
                 Punto punto = new Punto();
                 matriz[i][j]=punto;
