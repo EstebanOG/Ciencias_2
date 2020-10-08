@@ -4,7 +4,10 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.ArrayList;
+import javax.swing.JLabel;
 
 public class GridsCanvas extends Canvas {
     int width, height;
@@ -16,9 +19,9 @@ public class GridsCanvas extends Canvas {
     private int clavePadre, claveAbuelo;
 
   GridsCanvas(int w, int h, int r, int c) {
-    setSize(width = 1300, height = 550);
-    rows = 40;
-    cols = 40;
+    setSize(width = 1400, height = 600);
+    rows = 80;
+    cols = 80;
     this.izqP = null;
     this.derP = null;
   }
@@ -51,14 +54,14 @@ public class GridsCanvas extends Canvas {
             for (int j = 0; j < puntos.size(); j++) {
                 if (puntos.get(j).getNodoRNX().getColor() == 1) {
                     g.setColor(Color.red);
-                    g.setFont( new Font( "Tahoma", Font.BOLD, 20 ) );
+                    g.setFont( new Font( "Tahoma", Font.BOLD, 15 ) );
                 } else {
                     g.setColor(Color.BLACK);
-                    g.setFont( new Font( "Tahoma", Font.BOLD, 20 ) );
+                    g.setFont( new Font( "Tahoma", Font.BOLD, 15 ) );
                 }
-                g.setFont( new Font( "Tahoma", Font.BOLD, 20 ) );
-                g.drawString(Integer.toString(puntos.get(j).getNodoRNX().getLlave()), (puntos.get(j).getPosY() * 80) + 40, (puntos.get(j).getPosX() * 40) + 20);
-                g.drawString(puntos.get(j).getNodoRNX().getNombre(), (puntos.get(j).getPosY() * 80) + 30, (puntos.get(j).getPosX() * 40) + 50);
+                g.setFont( new Font( "Tahoma", Font.BOLD, 15 ) );
+                g.drawString(Integer.toString(puntos.get(j).getNodoRNX().getLlave()), (puntos.get(j).getPosY() * 55) + 40, (puntos.get(j).getPosX() * 15) + 20);
+                g.drawString(puntos.get(j).getNodoRNX().getNombre(), (puntos.get(j).getPosY() * 55) + 30, (puntos.get(j).getPosX() * 15) + 50);
             }
             //Buscamos la raiz
             
@@ -112,12 +115,12 @@ public class GridsCanvas extends Canvas {
                 }
                 g.setColor(Color.BLACK);
                 if (izqP != null) {
-                    g.setFont( new Font( "Tahoma", Font.BOLD, 20 ) );
-                    g.drawLine((actP.getPosY() * 80) + 40, (actP.getPosX() * 40) + 30, (izqP.getPosY() * 80) + 40, (izqP.getPosX() * 40) + 30);
+                    g.setFont( new Font( "Tahoma", Font.BOLD, 15 ) );
+                    g.drawLine((actP.getPosY() * 55) + 40, (actP.getPosX() * 15) + 30, (izqP.getPosY() * 55) + 40, (izqP.getPosX() * 15) + 30);
                 }
                 if (derP != null) {
-                    g.setFont( new Font( "Tahoma", Font.BOLD, 20 ) );
-                    g.drawLine((actP.getPosY() * 80) + 40, (actP.getPosX() * 40) + 30, (derP.getPosY() * 80) + 40, (derP.getPosX() * 40) + 30);
+                    g.setFont( new Font( "Tahoma", Font.BOLD, 15 ) );
+                    g.drawLine((actP.getPosY() * 55) + 40, (actP.getPosX() * 15) + 30, (derP.getPosY() * 55) + 40, (derP.getPosX() * 15) + 30);
                 }
                 
                 this.actP = null;
@@ -164,5 +167,4 @@ public class GridsCanvas extends Canvas {
         }
 
     }
-
 }
