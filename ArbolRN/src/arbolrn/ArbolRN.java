@@ -188,6 +188,7 @@ public class ArbolRN {
             cabeza.setColor(NEGRO);
             cabeza.setIzq(z);
             cabeza.setDer(z);
+            cabeza.setNombre("AAAA");
             NodoRN temp, q, p, g;
             NodoRN t, f = z;
             int dir = 1;
@@ -310,6 +311,7 @@ public class ArbolRN {
             if(f != z){
                 NodoRN h = null;
                 f.setLlave(q.getLlave());
+                f.setNombre(q.getNombre());
                 if(q.getIzq()==z){
                     h = q.getDer();
                 }else{
