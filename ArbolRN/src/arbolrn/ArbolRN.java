@@ -264,20 +264,22 @@ public class ArbolRN {
                                 q.setColor(ROJO);
                             }else{
                                 int dir2;
-                                NodoRN r2;
+                                NodoRN r2,v2;
                                 if(g.getDer()==p){
                                     dir2 = 1;
-                                }else{
+                                }else {
                                     dir2 = 0;
                                 }
                                 
                                 if(dir2 == 0){
                                     r2 = g.getIzq();
+                                    v2 = g.getDer();
                                 }else{
                                     r2 = g.getDer();
+                                    v2 = g.getIzq();
                                 }
                                 
-                                if (colorRojo(r1)){
+                                if (colorRojo(v2)){
                                     if(dir2 == 0){
                                         System.out.println("Doble Rotacion a la izq.");
                                         g.setIzq(dobleRotacion(p, anterior));
@@ -285,19 +287,23 @@ public class ArbolRN {
                                         System.out.println("Doble Rotacion a la der.");
                                         g.setDer(dobleRotacion(p, anterior));
                                     }
-                                }else if(colorRojo(v1)){
+                                }else if(colorRojo(r2)){
                                     if(dir2 == 0){
                                         g.setIzq(simpleRotacion(p, anterior));
                                     }else{
                                         g.setDer(simpleRotacion(p, anterior));
                                     }
+                                    q.setColor(ROJO);
+                                    r2.setColor(ROJO);
+                                    r2.getIzq().setColor(NEGRO);
+                                    r2.getDer().setColor(NEGRO);
                                 }
                                 
-                                if (dir2 == 0){
-                                    r2 = g.getIzq();
-                                }else{
-                                    r2 = g.getDer();
-                                }
+//                                if (dir2 == 0){
+//                                    r2 = g.getIzq();
+//                                }else{
+//                                    r2 = g.getDer();
+//                                }
                                 q.setColor(ROJO);
                                 r2.setColor(ROJO);
                                 r2.getIzq().setColor(NEGRO);
