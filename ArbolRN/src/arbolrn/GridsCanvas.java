@@ -54,14 +54,14 @@ public class GridsCanvas extends Canvas {
             for (int j = 0; j < puntos.size(); j++) {
                 if (puntos.get(j).getNodoRNX().getColor() == 1) {
                     g.setColor(Color.red);
-                    g.setFont( new Font( "Tahoma", Font.BOLD, 15 ) );
+                    g.setFont( new Font( "Tahoma", Font.BOLD, 13 ) );
                 } else {
                     g.setColor(Color.BLACK);
-                    g.setFont( new Font( "Tahoma", Font.BOLD, 15 ) );
+                    g.setFont( new Font( "Tahoma", Font.BOLD, 13 ) );
                 }
                 g.setFont( new Font( "Tahoma", Font.BOLD, 15 ) );
-                g.drawString(Integer.toString(puntos.get(j).getNodoRNX().getLlave()), (puntos.get(j).getPosY() * 55) + 40, (puntos.get(j).getPosX() * 15) + 20);
-                g.drawString(puntos.get(j).getNodoRNX().getNombre(), (puntos.get(j).getPosY() * 55) + 30, (puntos.get(j).getPosX() * 15) + 50);
+                g.drawString(Integer.toString(puntos.get(j).getNodoRNX().getLlave()), (puntos.get(j).getPosY() * 65) + 40, (puntos.get(j).getPosX() * 25) + 20);
+                g.drawString(puntos.get(j).getNodoRNX().getNombre(), (puntos.get(j).getPosY() * 65) + 40, (puntos.get(j).getPosX() * 25) + 35);
             }
             //Buscamos la raiz
             
@@ -115,12 +115,12 @@ public class GridsCanvas extends Canvas {
                 }
                 g.setColor(Color.BLACK);
                 if (izqP != null) {
-                    g.setFont( new Font( "Tahoma", Font.BOLD, 15 ) );
-                    g.drawLine((actP.getPosY() * 55) + 40, (actP.getPosX() * 15) + 30, (izqP.getPosY() * 55) + 40, (izqP.getPosX() * 15) + 30);
+                    g.setFont( new Font( "Tahoma", Font.BOLD, 13 ) );
+                    g.drawLine((actP.getPosY() * 65) + 40, (actP.getPosX() * 25) + 30, (izqP.getPosY() * 65) + 40, (izqP.getPosX() * 25) + 30);
                 }
                 if (derP != null) {
-                    g.setFont( new Font( "Tahoma", Font.BOLD, 15 ) );
-                    g.drawLine((actP.getPosY() * 55) + 40, (actP.getPosX() * 15) + 30, (derP.getPosY() * 55) + 40, (derP.getPosX() * 15) + 30);
+                    g.setFont( new Font( "Tahoma", Font.BOLD, 13 ) );
+                    g.drawLine((actP.getPosY() * 65) + 40, (actP.getPosX() * 25) + 30, (derP.getPosY() * 65) + 40, (derP.getPosX() * 25) + 30);
                 }
                 
                 this.actP = null;
