@@ -177,7 +177,7 @@ public class ArbolRN {
         if(dir == 1){
             raiz.setIzq(simpleRotacion(raiz.getIzq(),0));
         }else{
-            raiz.setDer(simpleRotacion(raiz.getDer(),0));
+            raiz.setDer(simpleRotacion(raiz.getDer(),1));
         }
         return simpleRotacion(raiz, dir);
     }
@@ -236,7 +236,7 @@ public class ArbolRN {
                     t = q.getDer();
                     w = q.getIzq();
                 }
-                
+
                 if(!colorRojo(q) && !colorRojo(t)){
                     if(colorRojo(w)){
                         temp = simpleRotacion(q,dir);
