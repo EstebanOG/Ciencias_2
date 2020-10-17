@@ -343,11 +343,8 @@ public class ArbolRN {
         preorden(raiz);
         this.listInorden.remove(0);
         this.listPreorden.remove(0);
-        System.out.println("X:"+listInorden.size()+" Y:"+listPreorden.size());
-        
         for(int i=0; i<40;i++){
             for(int j=0; j<40;j++){
-                //punto.setNodoRNX(listInorden.get(j));
                 Punto punto = new Punto();
                 matriz[i][j]=punto;
             }
@@ -373,9 +370,7 @@ public class ArbolRN {
                     matriz[i][j].setPosY(j);
                     this.listPunto.add(matriz[i][j]);
                 }
-                //System.out.println(","+matriz[i][j].getNodoRNX().getLlave()+"-"+matriz[i][j].getNodoRNY().getLlave());
             }
-            System.out.println("----");
         }
     }
      public ArrayList<Punto> obtenerPuntos(){

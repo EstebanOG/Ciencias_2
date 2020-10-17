@@ -29,28 +29,12 @@ public class GridsCanvas extends Canvas {
     @Override
     public void paint(Graphics g) {
         int i;
-
         width = getSize().width;
         height = getSize().height;
-
-//        // draw the rows
-//        int rowHt = height / (rows);
-//        for (i = 0; i < rows; i++) {
-//            g.drawLine(0, i * rowHt, width, i * rowHt);
-//            g.setFont( new Font( "Tahoma", Font.BOLD, 20 ) );
-//        }
-//
-//        // draw the columns
-//        int rowWid = width / (cols);
-//        for (i = 0; i < cols; i++) {
-//            g.drawLine(i * rowWid, 0, i * rowWid, height);
-//            g.setFont( new Font( "Tahoma", Font.BOLD, 20 ) );
-//        }
 
         if (puntos == null || puntos.isEmpty()) {
 
         } else {
-            System.out.println("Tamaño dibuja:"+puntos.size());
             for (int j = 0; j < puntos.size(); j++) {
                 if (puntos.get(j).getNodoRNX().getColor() == 1) {
                     g.setColor(Color.red);
@@ -66,7 +50,6 @@ public class GridsCanvas extends Canvas {
             //Buscamos la raiz
             
             for (int k = 0; k < puntos.size(); k++) {
-                System.out.println("xd");
                 if (puntos.get(k).getPosX() == 0) {
                     this.raizP = puntos.get(k);
                     this.actP = puntos.get(k);
@@ -77,17 +60,14 @@ public class GridsCanvas extends Canvas {
             while(puntos.size()>0){
                 for (int k = 0; k < puntos.size(); k++) {
                     if (puntos.get(k).getNodoRNX().getLlave() < actP.getNodoRNX().getLlave()) {
-                        System.out.println("Se cumple menor :" + puntos.get(k).getNodoRNX().getLlave() + "<" + actP.getNodoRNX().getLlave());
                         if (izqP == null || (puntos.get(k).getPosX() < izqP.getPosX())) {
                             this.izqP = puntos.get(k);
                         }
                     } else {
                         if (derP == null) {
-                            System.out.println("Entra en no null");
                             if((actP.getNodoRNX().getLlave()<raizP.getNodoRNX().getLlave())&&(puntos.get(k).getNodoRNX().getLlave()<raizP.getNodoRNX().getLlave())){
                                 if((puntos.get(k).getNodoRNX().getLlave()<=clavePadre)||(clavePadre<actP.getNodoRNX().getLlave()&&puntos.get(k).getNodoRNX().getLlave()<claveAbuelo))
                                     this.derP = puntos.get(k);
-                                System.out.println("If 1");
                             }  
                                 
                             if((actP.getNodoRNX().getLlave()>=raizP.getNodoRNX().getLlave())){
@@ -100,11 +80,7 @@ public class GridsCanvas extends Canvas {
                                         if((actP.getNodoRNX().getLlave()>clavePadre&&actP.getNodoRNX().getLlave()>claveAbuelo) && puntos.get(k).getNodoRNX().getLlave()>clavePadre &&puntos.get(k).getNodoRNX().getLlave()>claveAbuelo)
                                             this.derP = puntos.get(k); 
                                     }
-                                        
-                                    
                                 }
-                                
-                                System.out.println("If 2");
                             }
                                 
                         }else{
@@ -128,7 +104,6 @@ public class GridsCanvas extends Canvas {
                 this.derP = null;
                 int indiceEliminar = -1;
                 for (int k = 0; k < puntos.size(); k++) {
-                    System.out.println("xd");
                     if (actP==null||puntos.get(k).getPosX() < actP.getPosX()){
                         this.actP = puntos.get(k);
                         //Se busca padre y abuelo del clave actual
@@ -142,7 +117,6 @@ public class GridsCanvas extends Canvas {
                                 }    
                             }
                         }
-                        System.out.println("Actual: "+ actP.getNodoRNX().getLlave()+" Padre:"+clavePadre+" Abuelo:"+claveAbuelo);
                         indiceEliminar = k;
                     }
                 }
