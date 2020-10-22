@@ -183,6 +183,8 @@ public class Interfaz extends JFrame{
                                ArbolE.limpiarIn();
                                ArbolE.limpiarPos();
                                ArbolE.limpiarPre();
+                               repintar();
+                               panel.repaint();
                             }
                             
                 });
@@ -221,7 +223,8 @@ public class Interfaz extends JFrame{
                             Recorridos.setVisible(false);
                             scroll1.setVisible(true);
                             Cerrar.setVisible(true);
-                            ArbolE.posorden(ArbolE.getRaiz());
+                            repintar();
+                            panel.repaint();
 			}			
 	    });
                 panel.add(Consultar);
@@ -231,7 +234,14 @@ public class Interfaz extends JFrame{
 		Ingresar.addActionListener(new ActionListener(){  
 			@Override
 			public void actionPerformed(ActionEvent e) {
-                                
+                            boolean palabraExiste = false;
+                            for (int i = 0; i < tabla.getRowCount(); i++) {
+                                if(tabla.getValueAt(i, 0).toString().equals(IngresarPalabra.getText())){
+                                    System.out.println("La palabra ya existe");
+                                    palabraExiste = true;
+                                }
+                            }
+                            if(palabraExiste == false){
                                 scroll1.setVisible(false);
 				String palabra=IngresarPalabra.getText();
 				String palabraT= IngresarTraduccion.getText();
@@ -256,8 +266,11 @@ public class Interfaz extends JFrame{
                                 
 				IngresarPalabra.setText(null);
 				IngresarTraduccion.setText(null);
+                            }else{
                                 
-			
+                                JOptionPane.showMessageDialog(null,"La palabra ya existe.");
+                            }
+                                
 			}
 
 			

@@ -85,11 +85,11 @@ public class ArbolEneario {
     }
 
     public void limpiarPre() {
-        this.in.clear();
+        this.pre.clear();
     }
     
     public void limpiarPos() {
-        this.in.clear();
+        this.pos.clear();
     }
 
 }
