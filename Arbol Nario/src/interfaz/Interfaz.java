@@ -14,11 +14,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -45,6 +47,7 @@ public class Interfaz extends JFrame{
         public JButton Consultar;
         public JButton Cerrar;
         public JButton Diccionario;
+        public JButton Recorridos;
 	public JLabel labelPalabra;
 	public JLabel labelTraduccion;
         public JLabel labelBuscar;
@@ -59,6 +62,9 @@ public class Interfaz extends JFrame{
         DefaultTableModel modelo = new DefaultTableModel();
         public JTable tabla = new JTable(modelo);
         JScrollPane scroll1 = new JScrollPane(tabla);
+        public ArrayList<String> pre;
+        public ArrayList<String> pos;
+        
         
         
 	
@@ -145,12 +151,42 @@ public class Interfaz extends JFrame{
                 Diccionario.addActionListener(new ActionListener(){  
 			@Override
 			public void actionPerformed(ActionEvent e) {
+                                Recorridos.setVisible(false);
                                 Cerrar.setVisible(true);
                                 scroll1.setVisible(true);			
 			}	
 	    });
                 panel.add(Diccionario);
                 
+                Recorridos = new JButton("Recorridos");
+                Recorridos.setBounds(475, 60, 100, 20);
+                Recorridos.addActionListener(new ActionListener(){
+                        
+			@Override
+			public void actionPerformed(ActionEvent e) {
+                            String in="";
+                            ArbolE.inorden(ArbolE.getRaiz());
+                            for(int i = 0; i<ArbolE.getIn().size();i++){
+                                in = in+ArbolE.getIn().get(i);
+                            }
+                            String pos="";
+                            ArbolE.posorden(ArbolE.getRaiz());
+                            for(int i = 0; i<ArbolE.getPos().size();i++){
+                                pos = pos+ArbolE.getPos().get(i);
+                            }
+                            String pre="";
+                            ArbolE.preorden(ArbolE.getRaiz());
+                            for(int i = 0; i<ArbolE.getPre().size();i++){
+                                pre = pre+ArbolE.getPre().get(i);
+                            }
+                               JOptionPane.showMessageDialog(null,"<html>"+"Pos: "+pos+"<br>"+"In: "+in+"<br>"+"Pre:"+pre+"</html>");	
+                               ArbolE.limpiarIn();
+                               ArbolE.limpiarPos();
+                               ArbolE.limpiarPre();
+                            }
+                            
+                });
+                panel.add(Recorridos);
                 Cerrar=new JButton("Cerrar");
 		Cerrar.setBounds(475, 60, 78, 20);
                 Cerrar.addActionListener(new ActionListener(){       
@@ -164,6 +200,7 @@ public class Interfaz extends JFrame{
                             labelBuscar.setVisible(false);
                             scroll1.setVisible(false);
                             Cerrar.setVisible(false);
+                            Recorridos.setVisible(true);
                                 
 			}			
 	    });
@@ -181,9 +218,10 @@ public class Interfaz extends JFrame{
                             labelTraduccion.setVisible(false);
                             IngresarBuscar.setVisible(true);
                             labelBuscar.setVisible(true);
+                            Recorridos.setVisible(false);
                             scroll1.setVisible(true);
                             Cerrar.setVisible(true);
-                            
+                            ArbolE.posorden(ArbolE.getRaiz());
 			}			
 	    });
                 panel.add(Consultar);
@@ -193,6 +231,7 @@ public class Interfaz extends JFrame{
 		Ingresar.addActionListener(new ActionListener(){  
 			@Override
 			public void actionPerformed(ActionEvent e) {
+                                
                                 scroll1.setVisible(false);
 				String palabra=IngresarPalabra.getText();
 				String palabraT= IngresarTraduccion.getText();
@@ -217,6 +256,7 @@ public class Interfaz extends JFrame{
                                 
 				IngresarPalabra.setText(null);
 				IngresarTraduccion.setText(null);
+                                
 			
 			}
 
@@ -307,11 +347,7 @@ public class Interfaz extends JFrame{
 		
 		paintArbolE(node.getPadre().sigHermano(),x+50,y);
 	}
-//        private void IngresarBuscarKeyReleased(java.awt.event.KeyEvent evt){
-//            String Palabre = IngresarPalabra.getText();
-//            filtrar(Palabre);
-//            
-//        }
+
 	public static void main(String []Args) {
 		new Interfaz();
                 

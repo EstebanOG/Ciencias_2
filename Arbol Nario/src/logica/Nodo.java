@@ -16,6 +16,7 @@ public class Nodo {
 		this.valor=Character.toLowerCase(valor);
 		this.f=false;
 		this.hijos= new ArrayList<Nodo>();
+                this.padre = null;
 	}
 	
 	Nodo(String palabraT){
@@ -23,6 +24,7 @@ public class Nodo {
 		this.valor='}';
 		this.palabraTraducida=palabraT;
 		this.f=true;
+                this.padre=null;
 	}
 	
 	public int numNodoFinales() {
@@ -154,7 +156,6 @@ public class Nodo {
 		public int compare(Nodo n1, Nodo n2) {
 			String valorNodo1= String.valueOf(n1.getValor());
 			String valorNodo2= String.valueOf(n2.getValor());
-			
 			return valorNodo1.compareTo(valorNodo2);
 		}
 	};
