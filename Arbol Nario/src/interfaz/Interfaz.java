@@ -9,6 +9,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -44,20 +47,23 @@ public class Interfaz extends JFrame{
         public JButton Diccionario;
 	public JLabel labelPalabra;
 	public JLabel labelTraduccion;
+        public JLabel labelBuscar;
 	public JTextField IngresarPalabra;
 	public JTextField IngresarTraduccion;
+        public JTextField IngresarBuscar;
 	public Graphics graphics;
 	public Graphics2D g;
 	public ArbolEneario ArbolE;
         public JTable tableDiccionario;
+        public TableRowSorter tr;// = new TableRowSorter<DefaultTableModel>(modelo);
         DefaultTableModel modelo = new DefaultTableModel();
-        JTable tabla = new JTable(modelo);
+        public JTable tabla = new JTable(modelo);
         JScrollPane scroll1 = new JScrollPane(tabla);
         
         
 	
 	public Interfaz() {
-                
+                //modelo.fireTableDataChanged();
                 createTable();
                 scroll1.setVisible(false);
                 
@@ -99,6 +105,11 @@ public class Interfaz extends JFrame{
 		//labelPalabraTraducida.setBorder(BorderFactory.createLineBorder(Color.black));
 		panel.add(labelTraduccion);
                 
+                labelBuscar = new JLabel("Buscar");
+		labelBuscar.setBounds(115, 10, 50, 20);
+                labelBuscar.setVisible(false);
+		panel.add(labelBuscar);
+                
 		IngresarPalabra= new JTextField();
 		IngresarPalabra.setBounds(125, 30, 100, 20);
 		IngresarPalabra.setVisible(true);
@@ -107,7 +118,28 @@ public class Interfaz extends JFrame{
 		IngresarTraduccion= new JTextField();
 		IngresarTraduccion.setBounds(300, 30, 100, 20);
 		panel.add(IngresarTraduccion);
-                		
+                
+                IngresarBuscar= new JTextField();
+		IngresarBuscar.setBounds(165, 10, 100, 20);
+                IngresarBuscar.setVisible(false);
+                IngresarBuscar.addKeyListener(new KeyListener(){
+                    @Override
+                    public void keyReleased(KeyEvent arg0) {
+                        String Palabre = IngresarBuscar.getText();
+                        filtrar(Palabre);
+                    }
+                    
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {   
+                    }
+                });
+		panel.add(IngresarBuscar);
+                
+                
                 Diccionario=new JButton("Diccionario");
 		Diccionario.setBounds(325, 60, 100, 20);
                 Diccionario.addActionListener(new ActionListener(){  
@@ -121,11 +153,17 @@ public class Interfaz extends JFrame{
                 
                 Cerrar=new JButton("Cerrar");
 		Cerrar.setBounds(475, 60, 78, 20);
-                Cerrar.addActionListener(new ActionListener(){  
+                Cerrar.addActionListener(new ActionListener(){       
 			@Override
 			public void actionPerformed(ActionEvent e) {
-                                scroll1.setVisible(false);
-                                Cerrar.setVisible(false);
+                            IngresarPalabra.setVisible(true);
+                            labelPalabra.setVisible(true);
+                            IngresarTraduccion.setVisible(true);
+                            labelTraduccion.setVisible(true);
+                            IngresarBuscar.setVisible(false);
+                            labelBuscar.setVisible(false);
+                            scroll1.setVisible(false);
+                            Cerrar.setVisible(false);
                                 
 			}			
 	    });
@@ -137,10 +175,15 @@ public class Interfaz extends JFrame{
                 Consultar.addActionListener(new ActionListener(){  
 			@Override
 			public void actionPerformed(ActionEvent e) {  
-                            String kr = IngresarPalabra.getText();
-                            filtrar(kr);
+                            IngresarPalabra.setVisible(false);
+                            labelPalabra.setVisible(false);
+                            IngresarTraduccion.setVisible(false);
+                            labelTraduccion.setVisible(false);
+                            IngresarBuscar.setVisible(true);
+                            labelBuscar.setVisible(true);
                             scroll1.setVisible(true);
                             Cerrar.setVisible(true);
+                            
 			}			
 	    });
                 panel.add(Consultar);
@@ -209,8 +252,9 @@ public class Interfaz extends JFrame{
         }
         
         void filtrar(String palabre){
-            TableRowSorter tr = new TableRowSorter(modelo);
-            tr.setRowFilter(RowFilter.regexFilter(IngresarPalabra.getText(), 0));
+            tr = new TableRowSorter(modelo);
+            tr.setRowFilter(RowFilter.regexFilter(IngresarBuscar.getText(), 0));
+            tabla.setRowSorter(tr);
         }
 	
 	public void repintar()
@@ -261,14 +305,16 @@ public class Interfaz extends JFrame{
 			g.drawLine(x-(20*ancho)-(10*ancho), y-6, x+(36), y-6);
 		}
 		
-		paintArbolE(node.getPadre().sigHermano(),x+36,y);
+		paintArbolE(node.getPadre().sigHermano(),x+50,y);
 	}
-        private void IngresarPalabraKeyReleased(java.awt.event.KeyEvent evt){
-            String Palabre = IngresarPalabra.getText();
-            filtrar(Palabre);
-        }
+//        private void IngresarBuscarKeyReleased(java.awt.event.KeyEvent evt){
+//            String Palabre = IngresarPalabra.getText();
+//            filtrar(Palabre);
+//            
+//        }
 	public static void main(String []Args) {
 		new Interfaz();
+                
 	}
 	
 
