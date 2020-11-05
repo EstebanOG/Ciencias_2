@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,7 +44,9 @@ public class Interfaz extends JFrame {
 	public Graphics2D g;
 	public Huffman h;
 	public HuffmanTable hTable;
+    private Comparator<String> comparador = Collections.reverseOrder();
     private ArrayList<String> encriptado = new ArrayList<String>();
+    private ArrayList<String> letrasEncriptadas = new ArrayList<String>();
     // Declaración Objetos Gráficos
     private JPanel pEncabezado, pLienzo, pDatos;
     private JLabel lTitulo, lMensajeIngresar, lSinComprimir;
@@ -168,28 +171,36 @@ public class Interfaz extends JFrame {
         bEncriptado.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                String text = tFrase.getText();
-//                lSinComprimir.setText("Sin Comprimir: " + tFrase.getText().length() + "*8 = " + tFrase.getText().length() * 8 + "bits");
-//                lSinComprimir.setVisible(true);
                 try {
-//                    h.setMensaje(text);
-//                    repintar();
-                    //String valoresEncriptados="";
-                    List valoresEncriptados = new LinkedList<>();
+
+//                    List valoresEncriptados = new LinkedList<>();
+//                    for (int i = 0; i < encriptado.size(); i++) {
+//                        System.out.println(encriptado.get(i));
+//                        valoresEncriptados.add(encriptado.get(i)+"<br>");
+//                    }
+//                    
+//                    Collections.sort(valoresEncriptados);
+//                    Collections.sort(encriptado);
+                    Collections.sort(encriptado);
+                    String valoresEncriptados = "";
                     for (int i = 0; i < encriptado.size(); i++) {
                         System.out.println(encriptado.get(i));
-                        valoresEncriptados.add(encriptado.get(i)+"<br>");
+                        valoresEncriptados += encriptado.get(i)+"<br>";
                     }
-                    Collections.sort(valoresEncriptados);
                     String letras="";
                     String valor="";
-                    for (int i = 0; i <encriptado.size(); i++) {
-                        letras += "<th style=\"margin:0\"  cellpadding=\"0\" cellspacing=\"0\" text-align: left>" + encriptado.get(i).substring(0,1) + "</th>";
+                    for (int i = 0; i <tFrase.getText().length(); i++) {
+                        letras += "<th style=\"margin:0\"  cellpadding=\"0\" cellspacing=\"0\" text-align: left>" + tFrase.getText().substring(i,i+1) + "</th>";
+                        for(int k = 0; k <encriptado.size(); k++){
+                            if( tFrase.getText().substring(i,i+1).equals(encriptado.get(k).substring(0,1))){
+                                valor += "<td style=\"margin:0\"  cellpadding=\"0\" cellspacing=\"0\" text-align: left>" + encriptado.get(k).substring(2) + "</td>";
+                            }
+                        }
                     }
-                    for (int i = 0; i <encriptado.size(); i++) {
-                        valor += "<td style=\"margin:0\"  cellpadding=\"0\" cellspacing=\"0\" text-align: left>" + encriptado.get(i).substring(2) + "</td>";
-                    }
-                    JOptionPane.showMessageDialog(null,"<html>"+valoresEncriptados+"<table style=\"margin:0\" cellpadding=\"0\" cellspacing=\"0\"><tr style=\"margin:0\">"+letras+"</tr><tr style=\"margin:0\">"+valor+"</tr></table>"+"</html>");
+//                    for (int i = 0; i <encriptado.size(); i++) {
+//                        valor += "<td style=\"margin:0\"  cellpadding=\"0\" cellspacing=\"0\" text-align: left>" + encriptado.get(i).substring(2) + "</td>";
+//                    }
+                    JOptionPane.showMessageDialog(null,"<html>"+valoresEncriptados+"<br><br><table style=\"margin:0\" cellpadding=\"0\" cellspacing=\"0\"><tr style=\"margin:0\">"+letras+"</tr><tr style=\"margin:0\">"+valor+"</tr></table>"+"</html>");
                 } catch (Exception error) {
                     System.out.println(error.toString());
                 }
