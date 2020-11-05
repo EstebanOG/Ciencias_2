@@ -8,6 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -169,11 +174,13 @@ public class Interfaz extends JFrame {
                 try {
 //                    h.setMensaje(text);
 //                    repintar();
-                    String valoresEncriptados="";
+                    //String valoresEncriptados="";
+                    List valoresEncriptados = new LinkedList<>();
                     for (int i = 0; i < encriptado.size(); i++) {
                         System.out.println(encriptado.get(i));
-                        valoresEncriptados += encriptado.get(i)+"<br>";
+                        valoresEncriptados.add(encriptado.get(i)+"<br>");
                     }
+                    Collections.sort(valoresEncriptados);
                     
                     JOptionPane.showMessageDialog(null,"<html>"+valoresEncriptados+"</html>");
                 } catch (Exception error) {
@@ -216,7 +223,7 @@ public class Interfaz extends JFrame {
 		int hizq = this.hTable.getIzq()[i];
 		int hder = this.hTable.getDer()[i];
                 int frec = this.hTable.getFrecuencia()[i];
-		g.setColor(Color.BLACK);
+		g.setColor(Color.BLUE);
 		g.setStroke(new BasicStroke(2));
 		if (this.hTable.getSimbolo()[i] == null) {
 			g.drawLine(nextLNodeX + nodeR, nextNodeY + nodeR, x + nodeR, y + nodeR);
@@ -234,7 +241,7 @@ public class Interfaz extends JFrame {
 			paintArbolH(hder, nextRNodeX, nextNodeY, level + 1,codigo+"1");
 		}else {
                         this.encriptado.add(hTable.getSimbolo()[i]+":"+codigo);
-			g.setColor(Color.BLACK);
+			g.setColor(Color.BLUE);
 			g.drawString(codigo, x-nodeR , y + nodeD+5);
 		}
 	}
