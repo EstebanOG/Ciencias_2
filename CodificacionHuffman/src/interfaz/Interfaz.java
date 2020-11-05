@@ -85,7 +85,7 @@ public class Interfaz extends JFrame {
                 } catch (Exception error) {
                     System.out.println(error.toString());
                 }
-                tFrase.setText("");
+                //tFrase.setText("");
 
             }
 
@@ -114,11 +114,19 @@ public class Interfaz extends JFrame {
 
 	private void paintArbolH(int i, int x, int y, int level, String codigo) {
 		int nodeR = nodeD / 2;
-		int nextLNodeX = x - LROffset + level * levelOffset;
-		int nextRNodeX = x + LROffset - level * levelOffset;
+                int nextRNodeX = 0;
+                int nextLNodeX = 0;
+                if(level<3){
+                     nextLNodeX = x - LROffset + level * levelOffset;
+                     nextRNodeX = x + LROffset - level * levelOffset;
+                }else{
+                     nextLNodeX = x + LROffset - level * levelOffset;
+                     nextRNodeX = x - LROffset + level * levelOffset;
+                }		
 		int nextNodeY = y + DownOffset;
 		int hizq = this.hTable.getIzq()[i];
 		int hder = this.hTable.getDer()[i];
+                int frec = this.hTable.getFrecuencia()[i];
 		g.setColor(Color.BLACK);
 		g.setStroke(new BasicStroke(2));
 		if (this.hTable.getSimbolo()[i] == null) {
@@ -128,13 +136,16 @@ public class Interfaz extends JFrame {
 		g.fillOval(x, y, nodeD - level, nodeD - level);
 		g.setColor(Color.WHITE);
 		if (this.hTable.getSimbolo()[i] == null) {
-			g.drawString(String.valueOf(i), x + nodeR - 10, y + nodeR + 4);
+			//g.drawString(String.valueOf(i), x + nodeR - 10, y + nodeR + 4);
+                        g.drawString(String.valueOf(frec), x + nodeR - 10, y + nodeR + 4);
 		} else {
-			g.drawString(String.valueOf(this.hTable.getSimbolo()[i]), x + nodeR - 10, y + nodeR + 4);
+                        g.drawString(String.valueOf(this.hTable.getSimbolo()[i]), x + nodeR - 10, y + nodeR + 4);
 		}
 		if (this.hTable.getSimbolo()[i] == null) {
 			paintArbolH(hizq, nextLNodeX, nextNodeY, level + 1,codigo+"0");
 			paintArbolH(hder, nextRNodeX, nextNodeY, level + 1,codigo+"1");
+//                        paintArbolH(this.hTable.getIzq()[i], nextLNodeX, nextNodeY, level + 1,codigo+"0");
+//			paintArbolH(this.hTable.getDer()[i], nextRNodeX, nextNodeY, level + 1,codigo+"1");
 		}else {
 			g.setColor(Color.BLACK);
 			g.drawString(codigo, x-nodeR , y + nodeD+5);
