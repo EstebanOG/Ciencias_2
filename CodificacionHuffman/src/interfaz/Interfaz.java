@@ -11,6 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -36,14 +37,15 @@ public class Interfaz extends JFrame {
 	public Huffman h;
 	public HuffmanTable hTable;
     // Declaración Objetos Gráficos
-    private JPanel pEncabezado, pLienzo;
-    private JLabel lTitulo, lMensajeIngresar;
+    private JPanel pEncabezado, pLienzo, pDatos;
+    private JLabel lTitulo, lMensajeIngresar, lSinComprimir;
     private JTextField tFrase;
-    private JButton bEnviarMensaje;
+    private JButton bEnviarMensaje,bMostrarTabla;
 
     public Interfaz() {
         super("Códigos de Huffman");
-
+        this.h = new Huffman();
+        
         pEncabezado = new JPanel();
         pEncabezado.setSize(1200, 100);
         pEncabezado.setLocation(0, 0);
@@ -51,11 +53,17 @@ public class Interfaz extends JFrame {
         this.add(pEncabezado);
 
         pLienzo = new JPanel();
-        pLienzo.setBounds(100, 110, 1000, 400);
+        pLienzo.setBounds(100, 110, 700, 400);
         pLienzo.setBackground(Color.WHITE);
         pLienzo.setBorder(BorderFactory.createLineBorder(Color.black));
         pLienzo.setAutoscrolls(true);
         this.add(pLienzo);
+        
+        pDatos = new JPanel();
+        pDatos.setSize(900, 200);
+        pDatos.setLocation(0, 510);
+        pDatos.setLayout(null);
+        this.add(pDatos);
 
         lTitulo = new JLabel("Códigos de Huffman");
         lTitulo.setBounds(10, 0, 220, 30);
@@ -64,6 +72,13 @@ public class Interfaz extends JFrame {
         lMensajeIngresar = new JLabel("Digite el mensaje. Solo se aceptan caracteres de la 'a' a la 'z'.");
         lMensajeIngresar.setBounds(10, 30, 500, 30);
         pEncabezado.add(lMensajeIngresar);
+        
+        lSinComprimir = new JLabel("");
+        lSinComprimir.setSize(200, 30);
+        lSinComprimir.setLocation(10, 50);
+        lSinComprimir.setFocusable(false);
+        lSinComprimir.setVisible(false);
+        pDatos.add(lSinComprimir);
 
         tFrase = new JTextField();
         tFrase.setSize(500, 30);
@@ -79,6 +94,8 @@ public class Interfaz extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String text = tFrase.getText();
+                lSinComprimir.setText("Sin Comprimir: " + tFrase.getText().length() + "*8 = " + tFrase.getText().length() * 8 + "bits");
+                lSinComprimir.setVisible(true);
                 try {
                     h.setMensaje(text);
                     repintar();
@@ -86,17 +103,59 @@ public class Interfaz extends JFrame {
                     System.out.println(error.toString());
                 }
                 //tFrase.setText("");
-
             }
-
         });
         pEncabezado.add(bEnviarMensaje);
         pEncabezado.revalidate();
         pEncabezado.repaint();
+        
+        bMostrarTabla = new JButton("Mostrar Tabla");
+        bMostrarTabla.setSize(200, 30);
+        bMostrarTabla.setLocation(10, 20);
+        bMostrarTabla.setFocusable(false);
+        bMostrarTabla.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {            
+                String encabezado = "<th></th>";
+                String simbolo = "<td>SIMBOLO</td>";
+                String frecuencia = "<td>FRECUENCIA</td>";
+                String padre = "<td>PADRE</td>";
+                String tipo = "<td>TIPO</td>";
+                String izq = "<td>IZQ</td>";
+                String der = "<td>DER</td>";
+                for(int i = 0; i <= h.ultimoI();i++){
+                    encabezado += "<th>"+String.valueOf(i)+"</th>";
+                }
+                for(int i = 0; i <= h.ultimoI();i++){
+                    simbolo += "<td>"+String.valueOf(h.getTabla().getSimbolo()[i])+"</td>";
+                }
+                for(int i = 0; i <= h.ultimoI();i++){
+                    frecuencia += "<td>"+String.valueOf(h.getTabla().getFrecuencia()[i])+"</td>";
+                }
+                for(int i = 0; i <= h.ultimoI();i++){
+                    padre += "<td>"+String.valueOf(h.getTabla().getPadre()[i])+"</td>";
+                }
+                for(int i = 0; i <= h.ultimoI();i++){
+                    tipo += "<td>"+String.valueOf(h.getTabla().getTipo()[i])+"</td>";
+                }
+                for(int i = 0; i <= h.ultimoI();i++){
+                    izq += "<td>"+String.valueOf(h.getTabla().getIzq()[i])+"</td>";
+                }
+                for(int i = 0; i <= h.ultimoI();i++){
+                    der += "<td>"+String.valueOf(h.getTabla().getPadre()[i])+"</td>";
+                }
+                try {
+                    JOptionPane.showMessageDialog(null,"<html><table BORDER>  <tbody><tr>"+encabezado+"</tr><tr>"+simbolo+"</tr><tr>"+frecuencia+"</tr><tr>"+padre+"</tr><tr>"+tipo+"</tr><tr>"+izq+"</tr><tr>"+der+"</tr> </tbody></table></html>");
+                } catch (Exception error) {
+                    System.out.println(error.toString());
+                }
+            }
+        });
+        pDatos.add(bMostrarTabla);
 
-        this.h = new Huffman();
+        
         setLayout(null);
-        setSize(1200, 700);
+        setSize(900, 700);
         setLocationRelativeTo(this);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
@@ -136,7 +195,6 @@ public class Interfaz extends JFrame {
 		g.fillOval(x, y, nodeD - level, nodeD - level);
 		g.setColor(Color.WHITE);
 		if (this.hTable.getSimbolo()[i] == null) {
-			//g.drawString(String.valueOf(i), x + nodeR - 10, y + nodeR + 4);
                         g.drawString(String.valueOf(frec), x + nodeR - 10, y + nodeR + 4);
 		} else {
                         g.drawString(String.valueOf(this.hTable.getSimbolo()[i]), x + nodeR - 10, y + nodeR + 4);
@@ -144,9 +202,8 @@ public class Interfaz extends JFrame {
 		if (this.hTable.getSimbolo()[i] == null) {
 			paintArbolH(hizq, nextLNodeX, nextNodeY, level + 1,codigo+"0");
 			paintArbolH(hder, nextRNodeX, nextNodeY, level + 1,codigo+"1");
-//                        paintArbolH(this.hTable.getIzq()[i], nextLNodeX, nextNodeY, level + 1,codigo+"0");
-//			paintArbolH(this.hTable.getDer()[i], nextRNodeX, nextNodeY, level + 1,codigo+"1");
 		}else {
+                    
 			g.setColor(Color.BLACK);
 			g.drawString(codigo, x-nodeR , y + nodeD+5);
 		}
