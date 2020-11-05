@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -36,12 +38,13 @@ public class Interfaz extends JFrame {
 	public Graphics2D g;
 	public Huffman h;
 	public HuffmanTable hTable;
+    private ArrayList<String> encriptado = new ArrayList<String>();
     // Declaración Objetos Gráficos
     private JPanel pEncabezado, pLienzo, pDatos;
     private JLabel lTitulo, lMensajeIngresar, lSinComprimir;
     private JTextField tFrase;
-    private JButton bEnviarMensaje,bMostrarTabla;
-
+    private JButton bEnviarMensaje,bMostrarTabla, bEncriptado;
+   
     public Interfaz() {
         super("Códigos de Huffman");
         this.h = new Huffman();
@@ -152,7 +155,34 @@ public class Interfaz extends JFrame {
             }
         });
         pDatos.add(bMostrarTabla);
-
+        
+        bEncriptado = new JButton("Encriptado");
+        bEncriptado.setSize(200, 30);
+        bEncriptado.setLocation(240, 20);
+        bEncriptado.setFocusable(false);
+        bEncriptado.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                String text = tFrase.getText();
+//                lSinComprimir.setText("Sin Comprimir: " + tFrase.getText().length() + "*8 = " + tFrase.getText().length() * 8 + "bits");
+//                lSinComprimir.setVisible(true);
+                try {
+//                    h.setMensaje(text);
+//                    repintar();
+                    String valoresEncriptados="";
+                    for (int i = 0; i < encriptado.size(); i++) {
+                        System.out.println(encriptado.get(i));
+                        valoresEncriptados += encriptado.get(i)+"<br>";
+                    }
+                    
+                    JOptionPane.showMessageDialog(null,"<html>"+valoresEncriptados+"</html>");
+                } catch (Exception error) {
+                    System.out.println(error.toString());
+                }
+                //tFrase.setText("");
+            }
+        });
+        pDatos.add(bEncriptado);
         
         setLayout(null);
         setSize(900, 700);
@@ -203,7 +233,7 @@ public class Interfaz extends JFrame {
 			paintArbolH(hizq, nextLNodeX, nextNodeY, level + 1,codigo+"0");
 			paintArbolH(hder, nextRNodeX, nextNodeY, level + 1,codigo+"1");
 		}else {
-                    
+                        this.encriptado.add(hTable.getSimbolo()[i]+":"+codigo);
 			g.setColor(Color.BLACK);
 			g.drawString(codigo, x-nodeR , y + nodeD+5);
 		}
