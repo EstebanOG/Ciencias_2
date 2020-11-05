@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -189,18 +190,31 @@ public class Interfaz extends JFrame {
                     }
                     String letras="";
                     String valor="";
+                    String bits="";
                     for (int i = 0; i <tFrase.getText().length(); i++) {
                         letras += "<th style=\"margin:0\"  cellpadding=\"0\" cellspacing=\"0\" text-align: left>" + tFrase.getText().substring(i,i+1) + "</th>";
                         for(int k = 0; k <encriptado.size(); k++){
                             if( tFrase.getText().substring(i,i+1).equals(encriptado.get(k).substring(0,1))){
                                 valor += "<td style=\"margin:0\"  cellpadding=\"0\" cellspacing=\"0\" text-align: left>" + encriptado.get(k).substring(2) + "</td>";
+                                bits += encriptado.get(k).substring(2);
                             }
                         }
+                        
                     }
+                    lSinComprimir.setText("Sin Comprimir: " + tFrase.getText().length() + "*8 = " + tFrase.getText().length() * 8 + "bits");
+                    System.out.println(bits.length());
+                    double tamañio = tFrase.getText().length()*8;
+                    double codificado = (bits.length() * 100)/tamañio;
+                    double ahorro = 100-codificado;
+                    int c = bits.length();
+                    DecimalFormat formato1 = new DecimalFormat("#.000");
 //                    for (int i = 0; i <encriptado.size(); i++) {
 //                        valor += "<td style=\"margin:0\"  cellpadding=\"0\" cellspacing=\"0\" text-align: left>" + encriptado.get(i).substring(2) + "</td>";
 //                    }
-                    JOptionPane.showMessageDialog(null,"<html>"+valoresEncriptados+"<br><br><table style=\"margin:0\" cellpadding=\"0\" cellspacing=\"0\"><tr style=\"margin:0\">"+letras+"</tr><tr style=\"margin:0\">"+valor+"</tr></table>"+"</html>");
+                    JOptionPane.showMessageDialog(null,"<html>"+valoresEncriptados+"<br><br><table style=\"margin:0\" cellpadding=\"0\" cellspacing=\"0\"><tr style=\"margin:0\">"+letras+"</tr><tr style=\"margin:0\">"+valor+"</tr></table>"
+                            + "<table><tr style=\"margin:0\">"+"Sin Comprimir: " + tFrase.getText().length() + "*8 = " + tFrase.getText().length() * 8 + "bits"+"</tr>"
+                            + "<tr style=\"margin:0\">"+"Comprimido: " + c + "bits"+"</tr>"
+                            + "<tr style=\"margin:0\">"+"Codificado: " + formato1.format(codificado) + "% de espacio. Ahorro: "+ formato1.format(ahorro) + "%"+ "</tr>"+"</table>"+"</html>");
                 } catch (Exception error) {
                     System.out.println(error.toString());
                 }
