@@ -181,8 +181,15 @@ public class Interfaz extends JFrame {
                         valoresEncriptados.add(encriptado.get(i)+"<br>");
                     }
                     Collections.sort(valoresEncriptados);
-                    
-                    JOptionPane.showMessageDialog(null,"<html>"+valoresEncriptados+"</html>");
+                    String letras="";
+                    String valor="";
+                    for (int i = 0; i <encriptado.size(); i++) {
+                        letras += "<th border-style: none  text-align: left>" + encriptado.get(i).substring(0,1) + "</th>";
+                    }
+                    for (int i = 0; i <encriptado.size(); i++) {
+                        valor += "<td border-style: none  text-align: left>" + encriptado.get(i).substring(2) + "</td>";
+                    }
+                    JOptionPane.showMessageDialog(null,"<html>"+valoresEncriptados+"<table border-spacing:0  padding: 0; margin: 0;><tr border-style: none>"+letras+"</tr><tr border-style: none>"+valor+"</tr></table>"+"</html>");
                 } catch (Exception error) {
                     System.out.println(error.toString());
                 }
