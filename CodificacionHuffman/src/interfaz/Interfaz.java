@@ -31,10 +31,10 @@ public class Interfaz extends JFrame {
 	public int flag;
 	public int WinWidth = 700;
 	public int WinHeight = 600;
-	public int LROffset = 135;
-	public int DownOffset = 50;
+	public int LROffset = 180;
+	public int DownOffset = 49;
 	public int nodeD = 26;
-	public int levelOffset = 50;
+	public int levelOffset = 49;
 	public JPanel control;
 	public JPanel lienzo;
 	public JLabel Titulo;
@@ -251,7 +251,7 @@ public class Interfaz extends JFrame {
                      nextLNodeX = x + LROffset - level * levelOffset;
                      nextRNodeX = x - LROffset + level * levelOffset;
                 }		
-		int nextNodeY = y + DownOffset;
+		int nextNodeY = (y * level)+ DownOffset;
 		int hizq = this.hTable.getIzq()[i];
 		int hder = this.hTable.getDer()[i];
                 int frec = this.hTable.getFrecuencia()[i];
