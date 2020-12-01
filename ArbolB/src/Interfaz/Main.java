@@ -9,7 +9,6 @@ import java.awt.Toolkit;
 import java.awt.BorderLayout;
 // import java.awt.Container;
 import java.awt.Dimension;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 // import javax.swing.JFrame;
@@ -22,16 +21,17 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import Logica.*;
+import Logica.ABException;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 
 
 
 /**
- * Class BTreeRenderer
+ * Class Main
  * @author tnguyen
  */
-public class BTreeRenderer extends JFrame
+public class Main extends JFrame
 {
     public final static int APP_WIDTH       =   1140;
     public final static int APP_HEIGHT      =   650;
@@ -40,7 +40,7 @@ public class BTreeRenderer extends JFrame
     public final static int NODE_DIST       =   16;
     public final static int TREE_HEIGHT     =   32;
 
-    private final BTreeTest mTreeTest;
+    private final Test mTreeTest;
     private final StringBuilder mBuf;
     private final Object []mObjLists;
     private mxGraph mGraph;
@@ -53,9 +53,9 @@ public class BTreeRenderer extends JFrame
     private final JTextArea mOutputConsole;
 
 
-    public BTreeRenderer() {
+    public Main() {
         super("Arbol B");
-        mTreeTest = new BTreeTest();
+        mTreeTest = new Test();
         mBuf = new StringBuilder();
         mObjLists = new Object[TREE_HEIGHT];
         mAddBt = new JButton("Insertar");
@@ -124,7 +124,7 @@ public class BTreeRenderer extends JFrame
         try {
             nVal = Integer.parseInt(strInput);
         }
-        catch (Exception ex) {
+        catch (java.lang.Exception ex) {
             return null;
         }
 
@@ -204,35 +204,12 @@ public class BTreeRenderer extends JFrame
     }
 
 
-    public void saveButtonPressed() {
-        String strSavedFile;
-        String strText = mOutputConsole.getText();
-        if (strText == null) {
-            strText = "";
-        }
-        strText = strText.trim();
-        if (strText.isEmpty()) {
-            // Nothing to save
-            return;
-        }
-
-        try {
-            strSavedFile = SimpleFileWriter.saveToFile(strText);
-        }
-        catch (IOException ioex) {
-            println("Error: failed to save to file msg = " + ioex.getMessage());
-            ioex.printStackTrace();
-            return;
-        }
-
-        mOutputConsole.setText("Successfully save console text to file = " + strSavedFile);
-    }
 
 
-    private BTIteratorIF mIter = null;
+    private Iterator mIter = null;
     public void listButtonPressed() {
         if (mIter == null) {
-            mIter = new BTIteratorImpl();
+            mIter = new Main.IteratorImpl();
         }
 
         mOutputConsole.setText("");
@@ -254,13 +231,13 @@ public class BTreeRenderer extends JFrame
         try {
             generateGraphObject(mTreeTest.getBTree().getRootNode(), 0);
         }
-        catch (BTException btex) {
+        catch (ABException btex) {
             btex.printStackTrace();
             return;
         }
 
         Box hBox = Box.createHorizontalBox();
-        hBox.add(new JLabel("   Value:  "));
+        hBox.add(new JLabel("   Llave:  "));
         hBox.add(mText);
         hBox.add(nText);
         hBox.add(mAddBt);
@@ -310,7 +287,7 @@ public class BTreeRenderer extends JFrame
                 }
 
                 if (i > 0) {
-                    // Connect the nodes
+                    // Conecta los nodos
                     List<KeyData> keyList = (List<KeyData>)mObjLists[i - 1];
                     int j = 0, k = 0;
                     for (Object pObj : pObjList) {
@@ -323,7 +300,7 @@ public class BTreeRenderer extends JFrame
                     }
                 }
 
-                // Swap two object lists for next loop
+                // Intercambia dos listas de objetos para el siguiente ciclo
                 tempObjList = pObjList;
                 pObjList = cObjList;
                 cObjList = tempObjList;
@@ -369,14 +346,14 @@ public class BTreeRenderer extends JFrame
     }
 
 
-    private void generateGraphObject(BTNode<Integer, String> treeNode, int nLevel) throws BTException {
+    private void generateGraphObject(Nodo<Integer, String> treeNode, int nLevel) throws ABException {
         if ((treeNode == null) ||
             (treeNode.mCurrentKeyNum == 0)) {
             return;
         }
 
         int currentKeyNum = treeNode.mCurrentKeyNum;
-        BTKeyValue<Integer, String> keyVal;
+        KeyValue<Integer, String> keyVal;
 
         List<KeyData> keyList = (List<KeyData>)mObjLists[nLevel];
         if (keyList == null) {
@@ -385,7 +362,7 @@ public class BTreeRenderer extends JFrame
         }
 
         mBuf.setLength(0);
-        // Render the keys in the node
+        // Renderiza las claves en el nodo
         for (int i = 0; i < currentKeyNum; ++i) {
             if (i > 0) {
                 mBuf.append(" | ");
@@ -415,20 +392,20 @@ public class BTreeRenderer extends JFrame
 
 
     public void searchKey(Integer key) {
-        println("Search for key = " + key);
+        println("Buscar la llave  = " + key);
         String strVal = mTreeTest.getBTree().search(key);
         if (strVal != null) {
-            println("Key = " + key + " | Value = " + strVal);
+            println("Llave = " + key + " | Valor = " + strVal);
         }
         else {
-            println("No value found for key = " + key);
+            println("No hay un valor para la llave  = " + key);
         }
     }
 
 
     public void deleteKey(Integer key) {
         String strVal = mTreeTest.getBTree().delete(key);
-        println("Delete key = " + key + " | value = " + strVal);
+        println("Borrar llave = " + key + " | valor = " + strVal);
     }
 
 
@@ -440,7 +417,7 @@ public class BTreeRenderer extends JFrame
 
     public final void generateTestData() {
         for (int i = 1; i < 42; ++i) {
-            mTreeTest.add(i, "value-" + i);
+            mTreeTest.add(i, " " + i);
         }
 
         try {
@@ -448,19 +425,12 @@ public class BTreeRenderer extends JFrame
             mTreeTest.delete(23);
             mTreeTest.delete(27);
         }
-        catch (BTException btex) {
+        catch (ABException btex) {
             btex.printStackTrace();
         }
     }
-
-
-
-    /**
-     * Main Entry
-     * @param args 
-     */
     public static void main(String[] args) {
-        BTreeRenderer frame = new BTreeRenderer();
+        Main frame = new Main();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(APP_WIDTH, APP_HEIGHT);
         centreWindow(frame);
@@ -468,10 +438,6 @@ public class BTreeRenderer extends JFrame
         frame.setVisible(true);
     }
 
-
-    /**
-     * Inner class: KeyData
-     */
     class KeyData {
         String mKeys = null;
         int mKeyNum = 0;
@@ -482,18 +448,14 @@ public class BTreeRenderer extends JFrame
         }
     }
 
-
-    /**
-     * Inner class to implement BTree iterator
-     */
-    class BTIteratorImpl<K extends Comparable, V> implements BTIteratorIF<K, V> {
+    class IteratorImpl<K extends Comparable, V> implements Iterator<K, V> {
         private StringBuilder mBuf = new StringBuilder();
 
         @Override
         public boolean item(K key, V value) {
             mBuf.setLength(0);
             mBuf.append(key)
-                .append("  |  value = ")
+                .append("  |  Valor = ")
                 .append(value);
             println(mBuf.toString());
             /*

@@ -3,9 +3,9 @@ package Logica;
 
 
 /**
- * Interface BTIteratorIF
+ * Interface Iterator
  * @author tnguyen
  */
-public interface BTIteratorIF <K extends Comparable, V> {
+public interface Iterator<K extends Comparable, V> {
     public boolean item(K key, V value);
 }
