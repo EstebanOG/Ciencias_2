@@ -370,6 +370,7 @@ public class Main extends JFrame
 
             keyVal = treeNode.mKeys[i];
             mBuf.append(keyVal.mKey);
+            mBuf.append("("+keyVal.mValue+")");
         }
 
         keyList.add(new KeyData(mBuf.toString(), currentKeyNum));
